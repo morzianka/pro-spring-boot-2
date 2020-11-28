@@ -10,7 +10,7 @@
     <properties>
 
         <!-- Generic properties -->
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
 
         <!-- Web -->
         <jsp.version>2.2</jsp.version>
@@ -21,7 +21,7 @@
         <webjars.version>0.32</webjars.version>
 
         <!-- Spring -->
-        <spring-framework.version>5.0.3.RELEASE</spring-framework.version>
+        <spring-framework.version>5.3.1</spring-framework.version>
 
         <!-- JPA -->
         <spring-data-jpa>1.11.4.RELEASE</spring-data-jpa>
@@ -149,8 +149,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
