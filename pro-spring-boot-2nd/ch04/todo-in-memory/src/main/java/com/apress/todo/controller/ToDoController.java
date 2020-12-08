@@ -5,7 +5,7 @@ import com.apress.todo.domain.ToDoBuilder;
 import com.apress.todo.repository.CommonRepository;
 import com.apress.todo.validation.ToDoValidationError;
 import com.apress.todo.validation.ToDoValidationErrorBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -17,16 +17,12 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ToDoController {
 
-    private CommonRepository<ToDo> repository;
+    private final CommonRepository<ToDo> repository;
 
-    @Autowired
-    public ToDoController(CommonRepository<ToDo> repository) {
-        this.repository = repository;
-    }
-
-    @GetMapping("/todo") //@RequestMapping(value="/todo", method = {RequestMethod.GET})
+    @GetMapping("/todo")
     public ResponseEntity<Iterable<ToDo>> getToDos(){
         return ResponseEntity.ok(repository.findAll());
     }

@@ -51,7 +51,6 @@ public class ToDoRepository implements CommonRepository<ToDo> {
         return toDos.entrySet().stream().sorted(entryComparator).map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
-    private Comparator<Map.Entry<String,ToDo>> entryComparator = (Map.Entry<String, ToDo> o1, Map.Entry<String, ToDo> o2) -> {
-        return o1.getValue().getCreated().compareTo(o2.getValue().getCreated());
-    };
+    private Comparator<Map.Entry<String,ToDo>> entryComparator = Comparator
+            .comparing((Map.Entry<String, ToDo> o) -> o.getValue().getCreated());
 }
