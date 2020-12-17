@@ -2,7 +2,6 @@ package com.apress.todo.client;
 
 import com.apress.todo.client.domain.ToDo;
 import com.apress.todo.client.error.ToDoErrorHandler;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class ToDoRestClient {
     }
 
     public Iterable<ToDo> findAll() throws URISyntaxException {
-        RequestEntity<Iterable<ToDo>> requestEntity = new RequestEntity<Iterable<ToDo>>(HttpMethod.GET,new URI(properties.getUrl() + properties.getBasePath()));
+        RequestEntity<Iterable<ToDo>> requestEntity = new RequestEntity<>(HttpMethod.GET, new URI(properties.getUrl() + properties.getBasePath()));
         ResponseEntity<Iterable<ToDo>> response =
                 restTemplate.exchange(requestEntity,new ParameterizedTypeReference<Iterable<ToDo>>(){});
 
@@ -38,7 +37,7 @@ public class ToDoRestClient {
     }
 
     public ToDo findById(String id){
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("id", id);
         return restTemplate.getForObject(properties.getUrl() + properties.getBasePath() + "/{id}",ToDo.class,params);
     }
@@ -53,8 +52,8 @@ public class ToDoRestClient {
        return null;
     }
 
-    public ToDo setCompleted(String id) throws URISyntaxException{
-        Map<String, String> params = new HashMap<String, String>();
+    public ToDo setCompleted(String id) {
+        Map<String, String> params = new HashMap<>();
         params.put("id", id);
         restTemplate.postForObject(properties.getUrl() + properties.getBasePath() + "/{id}?_method=patch",null, ResponseEntity.class, params);
 
@@ -62,7 +61,7 @@ public class ToDoRestClient {
     }
 
     public void delete(String id){
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("id", id);
         restTemplate.delete(properties.getUrl() + properties.getBasePath() + "/{id}",params);
     }

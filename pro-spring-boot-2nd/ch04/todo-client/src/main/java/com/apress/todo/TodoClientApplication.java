@@ -34,7 +34,7 @@ public class TodoClientApplication {
             log.info(newToDo.toString());
 
             ToDo toDo = client.findById(newToDo.getId());
-            assert toDos != null;
+            assert toDo != null;
             log.info(toDo.toString());
 
             ToDo completed = client.setCompleted(newToDo.getId());
