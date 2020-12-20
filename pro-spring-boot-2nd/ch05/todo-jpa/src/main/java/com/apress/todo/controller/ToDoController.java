@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ToDoController {
     private static Logger log = LoggerFactory.getLogger(ToDoController.class);
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
 
     @Autowired
     public ToDoController(ToDoRepository toDoRepository) {
