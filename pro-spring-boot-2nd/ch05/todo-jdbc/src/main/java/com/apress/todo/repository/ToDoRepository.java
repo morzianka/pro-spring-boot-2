@@ -1,22 +1,17 @@
 package com.apress.todo.repository;
 
 import com.apress.todo.domain.ToDo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class ToDoRepository implements CommonRepository<ToDo> {
 
     private static final String SQL_INSERT = "insert into todo (id, description, created, modified, completed) values (:id,:description,:created,:modified,:completed)";
@@ -26,20 +21,6 @@ public class ToDoRepository implements CommonRepository<ToDo> {
     private static final String SQL_DELETE = "delete from todo where id = :id";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    public ToDoRepository(NamedParameterJdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private RowMapper<ToDo> toDoRowMapper = (ResultSet rs, int rowNum) -> {
-        ToDo toDo = new ToDo();
-        toDo.setId(rs.getString("id"));
-        toDo.setDescription(rs.getString("description"));
-        toDo.setModified(rs.getTimestamp("modified").toLocalDateTime());
-        toDo.setCreated(rs.getTimestamp("created").toLocalDateTime());
-        toDo.setCompleted(rs.getBoolean("completed"));
-        return toDo;
-    };
 
     @Override
     public ToDo save(final ToDo domain) {
@@ -82,7 +63,8 @@ public class ToDoRepository implements CommonRepository<ToDo> {
     public ToDo findById(String id) {
         try {
             Map<String, String> namedParameters = Collections.singletonMap("id", id);
-            return this.jdbcTemplate.queryForObject(SQL_QUERY_FIND_BY_ID, namedParameters, toDoRowMapper);
+            return this.jdbcTemplate.queryForObject(SQL_QUERY_FIND_BY_ID, namedParameters,
+                    new BeanPropertyRowMapper<>(ToDo.class));
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
@@ -90,7 +72,7 @@ public class ToDoRepository implements CommonRepository<ToDo> {
 
     @Override
     public Iterable<ToDo> findAll() {
-        return this.jdbcTemplate.query(SQL_QUERY_FIND_ALL, toDoRowMapper);
+        return this.jdbcTemplate.query(SQL_QUERY_FIND_ALL, new BeanPropertyRowMapper<>(ToDo.class));
     }
 
 
